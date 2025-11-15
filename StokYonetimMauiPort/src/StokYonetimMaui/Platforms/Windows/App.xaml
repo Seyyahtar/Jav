@@ -1,0 +1,6 @@
+<Application
+    x:Class="StokYonetimMaui.WinUI.App">
+    <Application.Resources>
+
+    </Application.Resources>
+</Application>

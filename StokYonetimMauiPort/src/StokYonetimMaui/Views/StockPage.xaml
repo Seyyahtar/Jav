@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StokYonetimMaui.Views.StockPage"
+             x:Name="StockPage"
+             Title="Stok">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Excel"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ExportCommand}" />
+        <ToolbarItem Text="Ekle"
+                     Order="Primary"
+                     Priority="1"
+                     Command="{Binding AddCommand}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <CollectionView ItemsSource="{Binding Items}" SelectionMode="None" Margin="16">
+            <CollectionView.EmptyView>
+                <Label Text="Henüz stok bulunmuyor." TextColor="{StaticResource TextSecondaryColor}" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Sil" BackgroundColor="{StaticResource DangerColor}" Command="{Binding Source={x:Reference StockPage}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Düzenle" BackgroundColor="{StaticResource PrimaryColor}" Command="{Binding Source={x:Reference StockPage}, Path=BindingContext.EditCommand}" CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="16" BackgroundColor="White" Margin="0,0,0,12" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding MaterialName}" FontAttributes="Bold" FontSize="18" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="Seri/Lot: {Binding SerialLotNumber}\nUBB: {Binding UbbCode}\nSKT: {Binding ExpiryDate, StringFormat='{0:dd.MM.yyyy}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                            <Frame Grid.RowSpan="2" Grid.Column="1" BackgroundColor="{StaticResource PrimaryColor}" CornerRadius="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding Quantity}" TextColor="White" FontAttributes="Bold" />
+                            </Frame>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
