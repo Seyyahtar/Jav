@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-    <MauiXaml Include="**\*.xaml" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" />
     <MauiSplashScreen Include="Resources\Splash\splash.svg" />
     <MauiImage Include="Resources\Images\**" />
