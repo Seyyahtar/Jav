@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             xmlns:models="clr-namespace:StokYonetimMaui.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="StokYonetimMaui.Views.ChecklistPage"
+             x:Name="ChecklistPageRoot"
+             x:DataType="viewModels:ChecklistViewModel"
+             Title="Kontrol Listesi">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Yeni Liste" Command="{Binding CreateChecklistCommand}" />
+        <ToolbarItem Text="Hasta Ekle" Command="{Binding AddPatientCommand}" />
+        <ToolbarItem Text="Tamamla" Command="{Binding CompleteChecklistCommand}" Order="Secondary" />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="12">
+            <Label Text="{Binding ActiveChecklist.Title}" Style="{StaticResource TitleLabelStyle}" />
+            <Label Text="{Binding ActiveChecklist.CreatedDate, StringFormat='Oluşturulma: {0:dd.MM.yyyy}'}" TextColor="{StaticResource TextSecondaryColor}" />
+
+            <CollectionView ItemsSource="{Binding Patients}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="Aktif bir kontrol listesi bulunmuyor." TextColor="{StaticResource TextSecondaryColor}" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ChecklistPatient">
+                        <Frame Padding="16" Margin="0,0,0,12" BackgroundColor="White" CornerRadius="12">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Switch IsToggled="{Binding Checked}" VerticalOptions="Center">
+                                    <Switch.Behaviors>
+                                        <toolkit:EventToCommandBehavior EventName="Toggled"
+                                                                       Command="{Binding Source={x:Reference ChecklistPageRoot}, Path=BindingContext.ToggleCheckedCommand}"
+                                                                       CommandParameter="{Binding .}" />
+                                    </Switch.Behaviors>
+                                </Switch>
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Note}" TextColor="{StaticResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

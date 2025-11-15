@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             x:Class="StokYonetimMaui.Views.StockManagementPage"
+             x:DataType="viewModels:StockManagementViewModel"
+             Title="Stok Yönetimi">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="12">
+            <Entry Placeholder="Malzeme adı"
+                   Text="{Binding MaterialName, Mode=TwoWay}" />
+            <Entry Placeholder="Seri/Lot numarası"
+                   Text="{Binding SerialLotNumber, Mode=TwoWay}" />
+            <Entry Placeholder="UBB kodu"
+                   Text="{Binding UbbCode, Mode=TwoWay}" />
+            <DatePicker Date="{Binding ExpiryDate, Mode=TwoWay}" />
+            <Stepper Minimum="1"
+                     Maximum="999"
+                     Increment="1"
+                     Value="{Binding QuantityStepValue, Mode=TwoWay}" />
+            <Label Text="{Binding Quantity, StringFormat='Adet: {0}'}" />
+            <DatePicker Date="{Binding DateAdded, Mode=TwoWay}" />
+            <Entry Placeholder="Kimden"
+                   Text="{Binding From, Mode=TwoWay}" />
+            <Entry Placeholder="Kime"
+                   Text="{Binding To, Mode=TwoWay}" />
+            <Entry Placeholder="Malzeme kodu"
+                   Text="{Binding MaterialCode, Mode=TwoWay}" />
+
+            <HorizontalStackLayout Spacing="12" Margin="0,12,0,0">
+                <Button Text="Kaydet" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButtonStyle}" HorizontalOptions="FillAndExpand" />
+                <Button Text="İptal" Command="{Binding CancelCommand}" Style="{StaticResource OutlineButtonStyle}" HorizontalOptions="FillAndExpand" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

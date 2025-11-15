@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             x:Class="StokYonetimMaui.Views.SettingsPage"
+             x:DataType="viewModels:SettingsViewModel"
+             Title="Ayarlar">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+            <Frame BackgroundColor="White" CornerRadius="12" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Kullanıcı" Style="{StaticResource SectionHeaderStyle}" />
+                    <Label Text="{Binding Username}" FontSize="20" />
+                    <Label Text="{Binding LoginDate, StringFormat='Giriş: {0:dd.MM.yyyy HH:mm}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Stoku Excel'e Aktar" Command="{Binding ExportStockCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+            <Button Text="Çıkış Yap" Command="{Binding LogoutCommand}" Style="{StaticResource OutlineButtonStyle}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
