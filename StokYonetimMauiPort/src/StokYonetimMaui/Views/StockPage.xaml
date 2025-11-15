@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             xmlns:models="clr-namespace:StokYonetimMaui.Models"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             x:Class="StokYonetimMaui.Views.StockPage"
+             x:DataType="viewModels:StockViewModel"
+             Title="Stok">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Excel"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ExportCommand}" />
+        <ToolbarItem Text="Ekle"
+                     Order="Primary"
+                     Priority="1"
+                     Command="{Binding AddCommand}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <CollectionView ItemsSource="{Binding Items}" SelectionMode="None" Margin="16">
+            <CollectionView.EmptyView>
+                <Label Text="Henüz stok bulunmuyor." TextColor="{StaticResource TextSecondaryColor}" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:StockItem">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Sil"
+                                           BackgroundColor="{StaticResource DangerColor}"
+                                           Command="{Binding BindingContext.DeleteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                           CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Düzenle"
+                                           BackgroundColor="{StaticResource PrimaryColor}"
+                                           Command="{Binding BindingContext.EditCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12" Padding="16">
+                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding MaterialName}" FontAttributes="Bold" FontSize="18" />
+                                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding SerialLotNumber, StringFormat='Seri/Lot: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                                    <Label Text="{Binding UbbCode, StringFormat='UBB: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                                    <Label Text="{Binding ExpiryDate, StringFormat='SKT: {0:dd.MM.yyyy}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Padding="12"
+                                        BackgroundColor="{StaticResource PrimaryColor}"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <shapes:RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Label Text="{Binding Quantity}" TextColor="White" FontAttributes="Bold" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
