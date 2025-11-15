@@ -27,6 +27,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AppShell>();
 
         builder.Services.AddSingleton<IFileSystemService, FileSystemService>();
+        builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IDatabaseInitializer, SqliteDatabaseInitializer>();
         builder.Services.AddSingleton<IAppRepository, AppRepository>();
         builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
