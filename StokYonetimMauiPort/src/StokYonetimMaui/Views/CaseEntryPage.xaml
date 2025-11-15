@@ -35,13 +35,13 @@
                                     <SwipeItem Text="Kaldır" BackgroundColor="{StaticResource DangerColor}" Command="{Binding Source={x:Reference CasePage}, Path=BindingContext.RemoveMaterialCommand}" CommandParameter="{Binding .}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame Padding="16" Margin="0,0,0,12" BackgroundColor="White" CornerRadius="12">
+                            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
                                 <VerticalStackLayout>
                                     <Label Text="{Binding MaterialName}" FontAttributes="Bold" />
                                     <Label Text="{Binding SerialLotNumber, StringFormat='Seri/Lot: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
                                     <Label Text="{Binding Quantity, StringFormat='Adet: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
                                 </VerticalStackLayout>
-                            </Frame>
+                            </Border>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

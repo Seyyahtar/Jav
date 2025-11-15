@@ -20,7 +20,7 @@
                                 <SwipeItem Text="Sil" BackgroundColor="{StaticResource DangerColor}" Command="{Binding Source={x:Reference HistoryPageRoot}, Path=BindingContext.RemoveCommand}" CommandParameter="{Binding .}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        <Frame BackgroundColor="White" CornerRadius="12" Padding="16" Margin="0,0,0,12">
+                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
                             <VerticalStackLayout>
                                 <Label Text="{Binding Description}" FontAttributes="Bold" />
                                 <Label Text="{Binding Date, StringFormat='{0:dd.MM.yyyy HH:mm}'}" TextColor="{StaticResource TextSecondaryColor}" />
@@ -29,7 +29,7 @@
                                         CommandParameter="{Binding .}"
                                         Style="{StaticResource OutlineButtonStyle}" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
