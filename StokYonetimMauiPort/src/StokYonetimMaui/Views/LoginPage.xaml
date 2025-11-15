@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             x:Class="StokYonetimMaui.Views.LoginPage"
+             x:DataType="viewModels:LoginViewModel"
+             Title="Giriş Yap">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16" VerticalOptions="Center">
+            <Label Text="Stok Yönetimi" Style="{StaticResource TitleLabelStyle}" HorizontalTextAlignment="Center" />
+            <Label Text="Lütfen kullanıcı adınızı girerek devam edin." TextColor="{StaticResource TextSecondaryColor}" HorizontalTextAlignment="Center" />
+
+            <Entry Placeholder="Kullanıcı adı"
+                   Text="{Binding Username, Mode=TwoWay}" />
+
+            <Button Text="Giriş Yap"
+                    Command="{Binding LoginCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
