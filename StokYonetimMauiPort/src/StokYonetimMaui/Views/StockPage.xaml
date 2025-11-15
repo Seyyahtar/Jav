@@ -5,7 +5,6 @@
              xmlns:models="clr-namespace:StokYonetimMaui.Models"
              xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
              x:Class="StokYonetimMaui.Views.StockPage"
-             x:Name="StockPage"
              x:DataType="viewModels:StockViewModel"
              Title="Stok">
     <ContentPage.ToolbarItems>
@@ -28,8 +27,14 @@
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>
-                                <SwipeItem Text="Sil" BackgroundColor="{StaticResource DangerColor}" Command="{Binding Source={x:Reference StockPage}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}" />
-                                <SwipeItem Text="Düzenle" BackgroundColor="{StaticResource PrimaryColor}" Command="{Binding Source={x:Reference StockPage}, Path=BindingContext.EditCommand}" CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Sil"
+                                           BackgroundColor="{StaticResource DangerColor}"
+                                           Command="{Binding BindingContext.DeleteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                           CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Düzenle"
+                                           BackgroundColor="{StaticResource PrimaryColor}"
+                                           Command="{Binding BindingContext.EditCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                           CommandParameter="{Binding .}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12" Padding="16">
