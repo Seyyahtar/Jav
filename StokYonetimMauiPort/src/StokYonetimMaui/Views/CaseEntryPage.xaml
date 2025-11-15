@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             xmlns:models="clr-namespace:StokYonetimMaui.Models"
              x:Class="StokYonetimMaui.Views.CaseEntryPage"
              x:Name="CasePage"
+             x:DataType="viewModels:CaseEntryViewModel"
              Title="Vaka Girişi">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Malzeme Ekle"
@@ -25,7 +28,7 @@
                     <Label Text="Malzeme eklemek için üstteki butonu kullanın." TextColor="{StaticResource TextSecondaryColor}" />
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:CaseMaterial">
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItems>
@@ -35,8 +38,8 @@
                             <Frame Padding="16" Margin="0,0,0,12" BackgroundColor="White" CornerRadius="12">
                                 <VerticalStackLayout>
                                     <Label Text="{Binding MaterialName}" FontAttributes="Bold" />
-                                    <Label Text="Seri/Lot: {Binding SerialLotNumber}" TextColor="{StaticResource TextSecondaryColor}" />
-                                    <Label Text="Adet: {Binding Quantity}" TextColor="{StaticResource TextSecondaryColor}" />
+                                    <Label Text="{Binding SerialLotNumber, StringFormat='Seri/Lot: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
+                                    <Label Text="{Binding Quantity, StringFormat='Adet: {0}'}" TextColor="{StaticResource TextSecondaryColor}" />
                                 </VerticalStackLayout>
                             </Frame>
                         </SwipeView>

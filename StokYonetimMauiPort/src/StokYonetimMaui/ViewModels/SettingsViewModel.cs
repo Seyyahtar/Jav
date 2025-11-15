@@ -10,6 +10,7 @@ public partial class SettingsViewModel : BaseViewModel
     private readonly IAuthenticationService _authenticationService;
     private readonly IAppRepository _repository;
     private readonly IExcelExportService _excelExportService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private string _username = string.Empty;
@@ -17,11 +18,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private DateTime? _loginDate;
 
-    public SettingsViewModel(IAuthenticationService authenticationService, IAppRepository repository, IExcelExportService excelExportService)
+    public SettingsViewModel(IAuthenticationService authenticationService, IAppRepository repository, IExcelExportService excelExportService, IDialogService dialogService)
     {
         _authenticationService = authenticationService;
         _repository = repository;
         _excelExportService = excelExportService;
+        _dialogService = dialogService;
         Title = "Ayarlar";
     }
 
@@ -50,6 +52,6 @@ public partial class SettingsViewModel : BaseViewModel
     {
         var stock = await _repository.GetStockAsync();
         var path = await _excelExportService.ExportStockAsync(stock, $"stok_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
-        await Application.Current!.MainPage!.DisplayAlert("Excel Aktarımı", $"Dosya kaydedildi: {path}", "Tamam");
+        await _dialogService.ShowAlertAsync("Excel Aktarımı", $"Dosya kaydedildi: {path}", "Tamam");
     }
 }

@@ -13,6 +13,7 @@ namespace StokYonetimMaui.ViewModels;
 public partial class CaseEntryViewModel : BaseViewModel
 {
     private readonly IAppRepository _repository;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<CaseMaterial> Materials { get; } = new();
 
@@ -33,9 +34,10 @@ public partial class CaseEntryViewModel : BaseViewModel
     [ObservableProperty]
     private string? _notes;
 
-    public CaseEntryViewModel(IAppRepository repository)
+    public CaseEntryViewModel(IAppRepository repository, IDialogService dialogService)
     {
         _repository = repository;
+        _dialogService = dialogService;
         Title = "Vaka Girişi";
     }
 
@@ -61,12 +63,12 @@ public partial class CaseEntryViewModel : BaseViewModel
         var stock = await _repository.GetStockAsync();
         if (!stock.Any())
         {
-            await Application.Current!.MainPage!.DisplayAlert("Bilgi", "Stokta kayıtlı malzeme bulunmuyor.", "Tamam");
+            await _dialogService.ShowAlertAsync("Bilgi", "Stokta kayıtlı malzeme bulunmuyor.", "Tamam");
             return;
         }
 
         var options = stock.Select(s => $"{s.MaterialName} ({s.SerialLotNumber})").ToArray();
-        var selected = await Application.Current!.MainPage!.DisplayActionSheet("Malzeme Seç", "İptal", null, options);
+        var selected = await _dialogService.ShowActionSheetAsync("Malzeme Seç", "İptal", null, options);
         if (string.IsNullOrWhiteSpace(selected) || selected == "İptal")
         {
             return;
@@ -78,7 +80,14 @@ public partial class CaseEntryViewModel : BaseViewModel
             return;
         }
 
-        var quantityText = await Application.Current!.MainPage!.DisplayPromptAsync("Adet", "Kullanılan adet", initialValue: "1", maxLength: 3, keyboard: Keyboard.Numeric);
+        var quantityText = await _dialogService.ShowPromptAsync(
+            "Adet",
+            "Kullanılan adet",
+            accept: "Tamam",
+            cancel: "İptal",
+            initialValue: "1",
+            maxLength: 3,
+            keyboard: Keyboard.Numeric);
         if (!int.TryParse(quantityText, out var quantity) || quantity <= 0)
         {
             return;
@@ -115,7 +124,7 @@ public partial class CaseEntryViewModel : BaseViewModel
 
             if (!Materials.Any())
             {
-                await Application.Current!.MainPage!.DisplayAlert("Uyarı", "En az bir malzeme seçmelisiniz.", "Tamam");
+                await _dialogService.ShowAlertAsync("Uyarı", "En az bir malzeme seçmelisiniz.", "Tamam");
                 return;
             }
 
@@ -138,7 +147,7 @@ public partial class CaseEntryViewModel : BaseViewModel
                 DetailsJson = JsonSerializer.Serialize(record)
             });
 
-            await Application.Current!.MainPage!.DisplayAlert("Başarılı", "Vaka kaydı oluşturuldu.", "Tamam");
+            await _dialogService.ShowAlertAsync("Başarılı", "Vaka kaydı oluşturuldu.", "Tamam");
             Materials.Clear();
             HospitalName = string.Empty;
             DoctorName = string.Empty;

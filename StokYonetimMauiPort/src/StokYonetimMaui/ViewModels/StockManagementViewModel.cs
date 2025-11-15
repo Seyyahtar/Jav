@@ -11,6 +11,7 @@ namespace StokYonetimMaui.ViewModels;
 public partial class StockManagementViewModel : BaseViewModel, IQueryAttributable
 {
     private readonly IAppRepository _repository;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private string _id = Guid.NewGuid().ToString();
@@ -51,9 +52,10 @@ public partial class StockManagementViewModel : BaseViewModel, IQueryAttributabl
     [ObservableProperty]
     private bool _isEditMode;
 
-    public StockManagementViewModel(IAppRepository repository)
+    public StockManagementViewModel(IAppRepository repository, IDialogService dialogService)
     {
         _repository = repository;
+        _dialogService = dialogService;
         Title = "Stok Yönetimi";
     }
 
@@ -98,7 +100,7 @@ public partial class StockManagementViewModel : BaseViewModel, IQueryAttributabl
 
             if (await _repository.StockHasDuplicateAsync(MaterialName, SerialLotNumber, IsEditMode ? Id : null))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Uyarı", "Bu malzeme ve seri/lot numarası zaten kayıtlı.", "Tamam");
+                await _dialogService.ShowAlertAsync("Uyarı", "Bu malzeme ve seri/lot numarası zaten kayıtlı.", "Tamam");
                 return;
             }
 
@@ -136,6 +138,21 @@ public partial class StockManagementViewModel : BaseViewModel, IQueryAttributabl
         ResetForm();
         return Shell.Current.GoToAsync("..", true);
     }
+
+    public double QuantityStepValue
+    {
+        get => Quantity;
+        set
+        {
+            var rounded = (int)Math.Round(value);
+            if (rounded != Quantity)
+            {
+                Quantity = rounded;
+            }
+        }
+    }
+
+    partial void OnQuantityChanged(int value) => OnPropertyChanged(nameof(QuantityStepValue));
 
     private void ResetForm()
     {

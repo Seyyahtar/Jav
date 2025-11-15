@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             xmlns:models="clr-namespace:StokYonetimMaui.Models"
              x:Class="StokYonetimMaui.Views.HistoryPage"
              x:Name="HistoryPageRoot"
+             x:DataType="viewModels:HistoryViewModel"
              Title="Geçmiş">
     <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
         <CollectionView ItemsSource="{Binding Records}" SelectionMode="None" Margin="16">
@@ -10,7 +13,7 @@
                 <Label Text="Geçmiş kaydı bulunmuyor." TextColor="{StaticResource TextSecondaryColor}" />
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:HistoryRecord">
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>

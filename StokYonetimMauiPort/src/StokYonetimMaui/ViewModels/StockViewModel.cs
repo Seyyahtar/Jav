@@ -14,16 +14,18 @@ public partial class StockViewModel : BaseViewModel
 {
     private readonly IAppRepository _repository;
     private readonly IExcelExportService _excelExportService;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<StockItem> Items { get; } = new();
 
     [ObservableProperty]
     private StockItem? _selectedItem;
 
-    public StockViewModel(IAppRepository repository, IExcelExportService excelExportService)
+    public StockViewModel(IAppRepository repository, IExcelExportService excelExportService, IDialogService dialogService)
     {
         _repository = repository;
         _excelExportService = excelExportService;
+        _dialogService = dialogService;
         Title = "Stok";
     }
 
@@ -89,7 +91,7 @@ public partial class StockViewModel : BaseViewModel
         await ExecuteBusyActionAsync(async () =>
         {
             var path = await _excelExportService.ExportStockAsync(Items, $"stok_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
-            await Application.Current!.MainPage!.DisplayAlert("Excel Aktarımı", $"Dosya kaydedildi: {path}", "Tamam");
+            await _dialogService.ShowAlertAsync("Excel Aktarımı", $"Dosya kaydedildi: {path}", "Tamam");
         });
     }
 }

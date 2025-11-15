@@ -12,15 +12,17 @@ namespace StokYonetimMaui.ViewModels;
 public partial class ChecklistViewModel : BaseViewModel
 {
     private readonly IAppRepository _repository;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private ChecklistRecord? _activeChecklist;
 
     public ObservableCollection<ChecklistPatient> Patients { get; } = new();
 
-    public ChecklistViewModel(IAppRepository repository)
+    public ChecklistViewModel(IAppRepository repository, IDialogService dialogService)
     {
         _repository = repository;
+        _dialogService = dialogService;
         Title = "Kontrol Listesi";
     }
 
@@ -57,7 +59,10 @@ public partial class ChecklistViewModel : BaseViewModel
     {
         await ExecuteBusyActionAsync(async () =>
         {
-            var title = await Application.Current!.MainPage!.DisplayPromptAsync("Kontrol Listesi", "Liste başlığı", initialValue: $"Plan {DateTime.Today:dd.MM.yyyy}");
+            var title = await _dialogService.ShowPromptAsync(
+                "Kontrol Listesi",
+                "Liste başlığı",
+                initialValue: $"Plan {DateTime.Today:dd.MM.yyyy}");
             if (string.IsNullOrWhiteSpace(title))
             {
                 return;
@@ -81,11 +86,11 @@ public partial class ChecklistViewModel : BaseViewModel
     {
         if (ActiveChecklist is null)
         {
-            await Application.Current!.MainPage!.DisplayAlert("Bilgi", "Önce bir kontrol listesi oluşturun.", "Tamam");
+            await _dialogService.ShowAlertAsync("Bilgi", "Önce bir kontrol listesi oluşturun.", "Tamam");
             return;
         }
 
-        var name = await Application.Current!.MainPage!.DisplayPromptAsync("Yeni Hasta", "Adı Soyadı");
+        var name = await _dialogService.ShowPromptAsync("Yeni Hasta", "Adı Soyadı");
         if (string.IsNullOrWhiteSpace(name))
         {
             return;

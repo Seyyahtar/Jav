@@ -10,12 +10,14 @@ namespace StokYonetimMaui.ViewModels;
 public partial class HistoryViewModel : BaseViewModel
 {
     private readonly IAppRepository _repository;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<HistoryRecord> Records { get; } = new();
 
-    public HistoryViewModel(IAppRepository repository)
+    public HistoryViewModel(IAppRepository repository, IDialogService dialogService)
     {
         _repository = repository;
+        _dialogService = dialogService;
         Title = "Geçmiş";
     }
 
@@ -42,7 +44,7 @@ public partial class HistoryViewModel : BaseViewModel
     [RelayCommand]
     private async Task RemoveAsync(HistoryRecord record)
     {
-        var confirm = await Application.Current!.MainPage!.DisplayAlert("Onay", "Kaydı silmek istediğinize emin misiniz?", "Evet", "Hayır");
+        var confirm = await _dialogService.ShowConfirmationAsync("Onay", "Kaydı silmek istediğinize emin misiniz?", "Evet", "Hayır");
         if (!confirm)
         {
             return;
@@ -69,6 +71,6 @@ public partial class HistoryViewModel : BaseViewModel
             }
         }
 
-        return Application.Current!.MainPage!.DisplayAlert(record.Description, details, "Kapat");
+        return _dialogService.ShowAlertAsync(record.Description, details, "Kapat");
     }
 }

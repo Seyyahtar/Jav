@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:StokYonetimMaui.ViewModels"
+             xmlns:models="clr-namespace:StokYonetimMaui.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="StokYonetimMaui.Views.ChecklistPage"
              x:Name="ChecklistPageRoot"
+             x:DataType="viewModels:ChecklistViewModel"
              Title="Kontrol Listesi">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Yeni Liste" Command="{Binding CreateChecklistCommand}" />
@@ -20,7 +23,7 @@
                     <Label Text="Aktif bir kontrol listesi bulunmuyor." TextColor="{StaticResource TextSecondaryColor}" />
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:ChecklistPatient">
                         <Frame Padding="16" Margin="0,0,0,12" BackgroundColor="White" CornerRadius="12">
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
                                 <Switch IsToggled="{Binding Checked}" VerticalOptions="Center">
